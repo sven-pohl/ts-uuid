@@ -1,0 +1,20 @@
+{
+  "name": "ts-uuid",
+  "version": "1.0.0",
+  "description": "Unique IDs for typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sven-pohl/ts-uuid.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sven-pohl/ts-uuid/issues"
+  },
+  "homepage": "https://github.com/sven-pohl/ts-uuid#readme"
+}
