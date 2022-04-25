@@ -55,4 +55,12 @@ export class Uuid {
     const value: string = uuid.toString()
     return uuid && (uuid instanceof Uuid || this.validator.test(value))
   }
+
+  public toString(): string {
+    return this.value;
+  }
+
+  public isEmpty(): boolean {
+    return this.value == Uuid.EMPTY;
+  }
 }
