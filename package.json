@@ -1,6 +1,6 @@
 {
   "name": "ts-uuid",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Unique IDs for typescript",
   "main": "./dist/uuid.js",
   "types": "./dist/uuid.d.ts",
