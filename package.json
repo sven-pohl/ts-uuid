@@ -5,8 +5,8 @@
   "main": "./dist/uuid.js",
   "types": "./dist/uuid.d.ts",
   "scripts": {
-    "test": "ts-mocha .\\tests\\**\\*.spec.ts",
-    "lint": "eslint \"**\\*.ts\"",
+    "test": "ts-mocha \"tests/**/*.spec.ts\"",
+    "lint": "eslint \"**/*.ts\"",
     "dev": "tsc --watch --preserveWatchOutput",
     "build": "tsc"
   },
