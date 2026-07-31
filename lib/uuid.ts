@@ -2,13 +2,15 @@ export class Uuid {
   private static pattern =
     "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$";
   private static flags = "i";
-  private static base = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
   private static validator = new RegExp(this.pattern, this.flags);
+  private static readonly empty = "00000000-0000-0000-0000-000000000000";
 
   private value: string;
 
   // an empty guid
-  public static EMPTY = "00000000-0000-0000-0000-000000000000";
+  public static get EMPTY (): string {
+    return this.empty
+  }
 
   private constructor (uuid: string) {
     if (!Uuid.validator.test(uuid)) {
@@ -19,26 +21,18 @@ export class Uuid {
   }
 
   public static create (): Uuid {
-    // get the current timestamp
-    let t = new Date().getTime()
-    // time in microseconds since page load or 0 if not supported
-    let d = (performance && performance.now && performance.now() * 1000) || 0
+    const bytes = crypto.getRandomValues(new Uint8Array(16))
+    bytes[6] = (bytes[6] & 0x0f) | 0x40
+    bytes[8] = (bytes[8] & 0x3f) | 0x80
 
-    return new Uuid(
-      this.base.replace(/[xy]/g, (c: string) => {
-        let r = Math.random() * 16
-        if (t > 0) {
-          // Use timestamp until depleted
-          r = (t + r) % 16 | 0
-          t = Math.floor(t / 16)
-        } else {
-          // Use microseconds since page-load if supported
-          r = (d + r) % 16 | 0
-          d = Math.floor(d / 16)
-        }
-        return (c === "x" ? r : (r & 0x3) | 0x8).toString(16)
-      })
-    )
+    const value = Array.from(bytes, byte => ("0" + byte.toString(16)).slice(-2))
+    return new Uuid([
+      value.slice(0, 4).join(""),
+      value.slice(4, 6).join(""),
+      value.slice(6, 8).join(""),
+      value.slice(8, 10).join(""),
+      value.slice(10, 16).join("")
+    ].join("-"))
   }
 
   public static createEmpty (): Uuid {
