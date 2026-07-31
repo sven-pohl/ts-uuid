@@ -1,6 +1,6 @@
 export class Uuid {
   private static pattern =
-    "^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$";
+    "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$";
   private static flags = "i";
   private static base = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
   private static validator = new RegExp(this.pattern, this.flags);
@@ -11,12 +11,11 @@ export class Uuid {
   public static EMPTY = "00000000-0000-0000-0000-000000000000";
 
   private constructor (uuid: string) {
-    if (!uuid) {
-      throw new TypeError("Invalid argument; `value` has no value.")
+    if (!Uuid.validator.test(uuid)) {
+      throw new TypeError("Invalid argument; `value` is not a valid UUID.")
     }
 
-    this.value = Uuid.EMPTY
-    if (uuid) this.value = uuid
+    this.value = uuid
   }
 
   public static create (): Uuid {
@@ -43,7 +42,7 @@ export class Uuid {
   }
 
   public static createEmpty (): Uuid {
-    return new Uuid("empty")
+    return new Uuid(Uuid.EMPTY)
   }
 
   public static parse (uuid: string): Uuid {
@@ -52,8 +51,8 @@ export class Uuid {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static isUuid (uuid: any): boolean {
-    const value: string = uuid.toString()
-    return uuid && (uuid instanceof Uuid || this.validator.test(value))
+    return uuid instanceof Uuid ||
+      (typeof uuid === "string" && this.validator.test(uuid))
   }
 
   public toString(): string {
